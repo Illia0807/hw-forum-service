@@ -1,5 +1,8 @@
 package telran.java47.accounting.service;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -81,6 +84,12 @@ public class UserAccountServiceImpl implements UserAccountService {
 		UserAccount userAccount = userAccountRepository.findById(login).orElseThrow(() -> new UserNotFoundException());
 		String password = passwordEncoder.encode(newPassword);
 		userAccount.setPassword(password);
+		LocalDate currentDate = LocalDate.now();
+		long daysLastPasswordChange = ChronoUnit.DAYS.between(userAccount.getLastDateChangePass(), currentDate);
+		if(daysLastPasswordChange>=60) {
+			System.out.println("Hi mr.User. Change your password, Now!! ");
+		}
+		userAccount.setLastDateChangePass(currentDate);
 		userAccountRepository.save(userAccount);
 
 	}

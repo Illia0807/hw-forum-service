@@ -17,6 +17,7 @@ public class AuthorizationConfiguration {
         http.httpBasic(withDefaults());
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+       
         http.authorizeRequests(authorize -> authorize
         		.mvcMatchers("/account/register", "/forum/posts/**")
         			.permitAll()
